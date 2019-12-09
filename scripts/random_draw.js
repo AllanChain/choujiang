@@ -1,22 +1,22 @@
 //let playing = false // 记录鼠标事件意义上的状态
 let handle = 0; // 记录真正是否循环
 let timeoutHandle = 0;
-const all_students = {
-  米米: "img/16272760.jpg",
-  司马龙飞: "img/36528777.jpg",
-  txtyb: "img/14294192.jpg"
-};
-const names = Object.keys(all_students);
+let all_students = null;
+let names = null;
+fetch('user_data.json')
+  .then(response => response.json())
+  .then(function(data) {
+    all_students = data;
+    names = Object.keys(all_students);
+  });
 const interval = 600;
 let textColor = "white";
-// 不知道为什么，文字的粒子数与初始值有奇妙关联，故暴力设提示词
-// setTimeout("setText('请拖放名单')", 1500)
 
 function clickDo() {
-  // if (!names) {
-  //   setText('请先上传!');
-  //   return;
-  // }
+  if (!names) {
+    alert("名单尚未传输完毕！");
+    return;
+  }
   if (handle == 0) {
     continueShowPic();
     clearTimeout(timeoutHandle); // 下一轮开始时，之前的timeout不要插嘴
