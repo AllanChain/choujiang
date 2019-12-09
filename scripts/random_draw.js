@@ -2,9 +2,9 @@
 let handle = 0; // 记录真正是否循环
 let timeoutHandle = 0;
 const all_students = {
-  米米: "https://avatars3.githubusercontent.com/u/16272760?s=256",
-  司马龙飞: "https://avatars3.githubusercontent.com/u/36528777?s=256",
-  txtyb: "https://avatars2.githubusercontent.com/u/14294192?s=256"
+  米米: "img/16272760.jpg",
+  司马龙飞: "img/36528777.jpg",
+  txtyb: "img/14294192.jpg"
 };
 const names = Object.keys(all_students);
 const interval = 600;
