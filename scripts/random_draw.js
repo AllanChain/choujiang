@@ -9,7 +9,7 @@ fetch('user_data.json')
     all_students = data;
     names = Object.keys(all_students);
   });
-const interval = 600;
+const interval = 300;
 let textColor = "white";
 
 function clickDo() {
@@ -36,13 +36,13 @@ function setText(s) {
 function randomSelect() {
   let selected = names[Math.floor(Math.random() * names.length)];
   setText(selected);
-  if (Math.random() < 0.2 && handle != 0) {
+  avatarImg.src = all_students[selected];
+  if (Math.random() < 0.1 && handle != 0) {
     clearInterval(handle);
     handle = 0;
     setTimeout("textColor='#1d73c9'", interval);
     //setTimeout("text.forEach(function(p){p.color='#FF0000'})", interval)
     toCircle();
-    avatarImg.src = all_students[selected];
     timeoutHandle = setTimeout(restore, 10000);
   }
 }
