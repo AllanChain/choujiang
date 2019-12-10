@@ -9,7 +9,7 @@ fetch('user_data.json')
     all_students = data;
     names = Object.keys(all_students);
   });
-const interval = 300;
+const interval = 200;
 let textColor = "white";
 
 function clickDo() {
@@ -18,7 +18,7 @@ function clickDo() {
     return;
   }
   if (handle == 0) {
-    continueShowPic();
+    toCircle();
     clearTimeout(timeoutHandle); // 下一轮开始时，之前的timeout不要插嘴
     textColor = "white";
     randomSelect(); // 不要窒息1s
