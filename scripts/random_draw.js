@@ -3,18 +3,26 @@ let handle = 0; // 记录真正是否循环
 let timeoutHandle = 0;
 let all_students = null;
 let names = null;
-fetch('user_data.json')
+let init_click = null;
+let timeStamp = Math.floor(Date.now() / 1000);
+// try to avoid cache
+fetch('user_data.json?'+timeStamp)
   .then(response => response.json())
   .then(function(data) {
     all_students = data;
     names = Object.keys(all_students);
+    setTimeout('setText("准备就绪")', 200);
   });
 const interval = 200;
 let textColor = "white";
 
 function clickDo() {
+  if (!init_click) {
+    init_click = 1;
+    return;
+  }
   if (!names) {
-    alert("名单尚未传输完毕！");
+    setText("尚未就绪");
     return;
   }
   if (handle == 0) {
@@ -50,7 +58,7 @@ function randomSelect() {
 function restore() {
   if (handle == 0) {
     textColor = "white";
-    setText("超新星之夜");
+    setText("新年晚会");
     continueShowPic();
   }
 }
@@ -68,3 +76,9 @@ function continueShowPic() {
     showLoop = setInterval(showPic, 1800);
   }
 }
+
+window.onkeypress = function(e){
+  if (e.keyCode == 13){
+    window.location.reload()
+  }
+};
