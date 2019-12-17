@@ -6,12 +6,14 @@ let names = null;
 let init_click = null;
 let timeStamp = Math.floor(Date.now() / 1000);
 // try to avoid cache
-fetch('user_data.json?'+timeStamp)
+// fetch('user_data.json?'+timeStamp)
+fetch('/api/choujiang?'+timeStamp)
   .then(response => response.json())
   .then(function(data) {
-    all_students = data;
-    names = Object.keys(all_students);
-    setTimeout('setText("准备就绪")', 200);
+    // all_students = data;
+    // names = Object.keys(all_students);
+    names = data;
+    // setTimeout('setText("准备就绪")', 200);
   });
 const interval = 200;
 let textColor = "white";
@@ -26,7 +28,7 @@ function clickDo() {
     return;
   }
   if (handle == 0) {
-    toCircle();
+    // toCircle();
     clearTimeout(timeoutHandle); // 下一轮开始时，之前的timeout不要插嘴
     textColor = "white";
     randomSelect(); // 不要窒息1s
@@ -44,13 +46,13 @@ function setText(s) {
 function randomSelect() {
   let selected = names[Math.floor(Math.random() * names.length)];
   setText(selected);
-  avatarImg.src = all_students[selected];
+  // avatarImg.src = all_students[selected];
   if (Math.random() < 0.1 && handle != 0) {
     clearInterval(handle);
     handle = 0;
     setTimeout("textColor='#1d73c9'", interval);
     //setTimeout("text.forEach(function(p){p.color='#FF0000'})", interval)
-    toCircle();
+    // toCircle();
     timeoutHandle = setTimeout(restore, 10000);
   }
 }
@@ -59,7 +61,7 @@ function restore() {
   if (handle == 0) {
     textColor = "white";
     setText("新年晚会");
-    continueShowPic();
+    // continueShowPic();
   }
 }
 

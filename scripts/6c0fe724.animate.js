@@ -218,18 +218,18 @@ function render() {
   //   );
   // context.closePath();
   // context.clip();
-  if (avatarImg.src != "") {
-    context.globalAlpha = 0.8;
-    context.drawImage(
-      avatarImg,
-      canvas.width / 2 - avatarImg.width / 2,
-      180 - avatarImg.height / 2,
-      avatarImg.width,
-      avatarImg.height
-    );
-    context.globalAlpha = 1;
-    context.restore();
-  }
+  // if (avatarImg.src != "") {
+  //   context.globalAlpha = 0.8;
+  //   context.drawImage(
+  //     avatarImg,
+  //     canvas.width / 2 - avatarImg.width / 2,
+  //     180 - avatarImg.height / 2,
+  //     avatarImg.width,
+  //     avatarImg.height
+  //   );
+  //   context.globalAlpha = 1;
+  //   context.restore();
+  // }
   [].forEach.call(particles, function(a) {
     context.save(),
       (context.globalAlpha = a.alpha),
