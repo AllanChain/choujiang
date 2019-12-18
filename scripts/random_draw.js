@@ -4,15 +4,24 @@ let timeoutHandle = 0;
 let all_students = null;
 let names = null;
 let init_click = null;
-let timeStamp = Math.floor(Date.now() / 1000);
+let total_points = 0;
+let point_list = [];
+let student_num = 0;
+const urlParams = new URLSearchParams(window.location.search);
+const prizeType = urlParams.get('prize');
 // try to avoid cache
 // fetch('user_data.json?'+timeStamp)
-fetch('/api/choujiang?'+timeStamp)
+fetch('/api/choujiang?'+Math.floor(Date.now() / 1000))
   .then(response => response.json())
   .then(function(data) {
-    // all_students = data;
-    // names = Object.keys(all_students);
-    names = data;
+    all_students = data;
+    names = Object.keys(all_students);
+    names.forEach(function (name, investments) {
+      point = all_students[name][prizeType];
+      point_list.push(point);
+      total_points += point;
+      student_num +=1;
+    });
     // setTimeout('setText("准备就绪")', 200);
   });
 const interval = 200;
@@ -44,7 +53,15 @@ function setText(s) {
 }
 
 function randomSelect() {
-  let selected = names[Math.floor(Math.random() * names.length)];
+  let rand_point = Math.floor(Math.random() * total_points);
+  let accum_point = 0;
+  for (let i=0; i<student_num; i++) {
+    accum_point += point_list[i];
+    if (accum_point > rand_point) {
+      let selected = names[i];
+      break;
+    }
+  }
   setText(selected);
   // avatarImg.src = all_students[selected];
   if (Math.random() < 0.1 && handle != 0) {
@@ -81,6 +98,6 @@ function continueShowPic() {
 
 window.onkeypress = function(e){
   if (e.keyCode == 13){
-    window.location.reload()
+    window.location.reload();
   }
 };
