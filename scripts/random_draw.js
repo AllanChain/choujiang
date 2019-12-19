@@ -17,7 +17,7 @@ fetch('/api/choujiang?'+Math.floor(Date.now() / 1000))
     all_students = data;
     names = Object.keys(all_students);
     names.forEach(function (name, investments) {
-      point = all_students[name][prizeType];
+      point = all_students[name][prizeType] + 1;
       point_list.push(point);
       total_points += point;
       student_num +=1;
