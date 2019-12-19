@@ -55,10 +55,11 @@ function setText(s) {
 function randomSelect() {
   let rand_point = Math.floor(Math.random() * total_points);
   let accum_point = 0;
+  let selected = "";
   for (let i=0; i<student_num; i++) {
     accum_point += point_list[i];
     if (accum_point > rand_point) {
-      let selected = names[i];
+      selected = names[i];
       break;
     }
   }
