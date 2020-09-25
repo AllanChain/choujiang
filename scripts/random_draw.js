@@ -9,6 +9,9 @@ let point_list = [];
 let student_num = 0;
 const urlParams = new URLSearchParams(window.location.search);
 const prizeType = urlParams.get('prize');
+
+const ensureLoop = 20
+let loopNow = 0
 // try to avoid cache
 // fetch('user_data.json?'+timeStamp)
 fetch('/api/choujiang?'+Math.floor(Date.now() / 1000))
@@ -65,7 +68,8 @@ function randomSelect() {
   }
   setText(selected);
   // avatarImg.src = all_students[selected];
-  if (Math.random() < 0.1 && handle != 0) {
+  if (loopNow++ > ensureLoop && Math.random() < 0.1 && handle != 0) {
+    loopNow = 0
     clearInterval(handle);
     handle = 0;
     setTimeout("textColor='#1d73c9'", interval);
@@ -78,7 +82,7 @@ function randomSelect() {
 function restore() {
   if (handle == 0) {
     textColor = "white";
-    setText("新年晚会");
+    setText("迎新晚会");
     // continueShowPic();
   }
 }
