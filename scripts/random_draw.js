@@ -1,4 +1,3 @@
-//let playing = false // 记录鼠标事件意义上的状态
 let handle = 0; // 记录真正是否循环
 let timeoutHandle = 0;
 let initClick = null;
