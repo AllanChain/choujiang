@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/purecss@2.0.3/build/forms-min.css"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/purecss@2.0.3/build/buttons-min.css"
+      crossorigin="anonymous"
+    />
+    <script>
+      function join(event) {
+        const name = document.getElementById("name").value;
+        const el = document.getElementById("info-box");
+        const urlParams = new URLSearchParams(window.location.search);
+
+        fetch(urlParams.get("api"), {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            event: urlParams.get("event"),
+            event_hash: urlParams.get("hash"),
+            timestamp: urlParams.get("timestamp"),
+            name,
+          }),
+        })
+          .then((r) => r.json())
+          .then((message) => {
+            if (message.success) {
+              el.style.color = "green";
+              el.innerText = "报名成功！";
+            } else {
+              el.style.color = "darkred";
+              el.innerText = "报名失败，可能是有重名";
+            }
+          })
+          .catch((err) => {
+            el.style.color = "darkred";
+            el.innerText = "报名失败，可能是网络故障，或姓名太罕见";
+          });
+      }
+    </script>
+    <title>参加抽奖</title>
+  </head>
+  <body>
+    <div style="margin: auto; max-width: 300px; text-align: center">
+      <p>参加抽奖！</p>
+      <p id="info-box" style="color: darkred">&nbsp;</p>
+      <form class="pure-form">
+        <input
+          style="margin: auto"
+          id="name"
+          type="text"
+          placeholder="您的姓名"
+        />
+      </form>
+      <br />
+      <button
+        type="submit"
+        class="pure-button pure-button-primary"
+        onclick="join()"
+      >
+        报名
+      </button>
+    </div>
+  </body>
+</html>
