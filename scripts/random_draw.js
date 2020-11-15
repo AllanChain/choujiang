@@ -1,35 +1,53 @@
 //let playing = false // 记录鼠标事件意义上的状态
 let handle = 0; // 记录真正是否循环
 let timeoutHandle = 0;
-let all_students = null;
+let initClick = null;
+
+const ensureLoop = 20;
+let loopNow = 0;
+
+let allStudents = null;
 let names = null;
-let init_click = null;
-let total_points = 0;
-let point_list = [];
-let student_num = 0;
+const luckyDogs = [];
+let pointsEnabled = true;
+let totalPoints = 0;
+const pointList = [];
+let studentNum = 0;
+
 const urlParams = new URLSearchParams(window.location.search);
-const prizeType = urlParams.get('prize');
-// try to avoid cache
-// fetch('user_data.json?'+timeStamp)
-fetch('/api/choujiang?'+Math.floor(Date.now() / 1000))
-  .then(response => response.json())
-  .then(function(data) {
-    all_students = data;
-    names = Object.keys(all_students);
-    names.forEach(function (name, investments) {
-      point = all_students[name][prizeType] + 1;
-      point_list.push(point);
-      total_points += point;
-      student_num +=1;
-    });
-    // setTimeout('setText("准备就绪")', 200);
-  });
+const prizeType = urlParams.get("prize");
+const eventName = urlParams.get("event");
+const apiPoint = urlParams.get("api");
+// initial word should be as long as possible
+// to get enough particles
+window.word = urlParams.get("word");
+
 const interval = 200;
 let textColor = "white";
 
+// try to avoid cache
+fetch(`${apiPoint}${location.search}&${Math.floor(Date.now() / 1000)}`)
+  .then((response) => response.json())
+  .then(function (data) {
+    allStudents = data;
+    if (Array.isArray(allStudents)) {
+      pointsEnabled = false;
+      names = allStudents
+    } else {
+      names = Object.keys(allStudents);
+      names.forEach((name) => {
+        point = allStudents[name][prizeType] + 1;
+        pointList.push(point);
+        totalPoints += point;
+        studentNum += 1;
+      });
+    }
+    // setTimeout('setText("准备就绪")', 200);
+  });
+
 function clickDo() {
-  if (!init_click) {
-    init_click = 1;
+  if (!initClick) {
+    initClick = 1;
     return;
   }
   if (!names) {
@@ -52,22 +70,29 @@ function setText(s) {
   createText(s);
 }
 
-function randomSelect() {
-  let rand_point = Math.floor(Math.random() * total_points);
-  let accum_point = 0;
-  let selected = "";
-  for (let i=0; i<student_num; i++) {
-    accum_point += point_list[i];
-    if (accum_point > rand_point) {
-      selected = names[i];
-      break;
+function naiveSelect() {
+  if (pointsEnabled) {
+    let rand_point = Math.floor(Math.random() * totalPoints);
+    let accum_point = 0;
+    for (let i = 0; i < studentNum; i++) {
+      accum_point += pointList[i];
+      if (accum_point > rand_point) return names[i];
     }
-  }
+  } else return names[Math.floor(Math.random() * names.length)];
+}
+
+function randomSelect() {
+  let selected = "人数不足"
+  if (luckyDogs.length < names.length)
+    while (luckyDogs.includes(selected = naiveSelect()));
+
   setText(selected);
   // avatarImg.src = all_students[selected];
-  if (Math.random() < 0.1 && handle != 0) {
+  if (loopNow++ > ensureLoop && Math.random() < 0.1 && handle != 0) {
+    loopNow = 0;
     clearInterval(handle);
     handle = 0;
+    luckyDogs.push(selected)
     setTimeout("textColor='#1d73c9'", interval);
     //setTimeout("text.forEach(function(p){p.color='#FF0000'})", interval)
     // toCircle();
@@ -78,7 +103,7 @@ function randomSelect() {
 function restore() {
   if (handle == 0) {
     textColor = "white";
-    setText("新年晚会");
+    setText(eventName);
     // continueShowPic();
   }
 }
@@ -90,15 +115,15 @@ function toCircle() {
 }
 
 function continueShowPic() {
-  avatarImg.src="";
+  avatarImg.src = "";
   if (showLoop == null) {
     showPic();
     showLoop = setInterval(showPic, 1800);
   }
 }
 
-window.onkeypress = function(e){
-  if (e.keyCode == 13){
+window.onkeypress = function (e) {
+  if (e.keyCode == 13) {
     window.location.reload();
   }
 };

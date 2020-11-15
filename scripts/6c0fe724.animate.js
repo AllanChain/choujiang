@@ -312,7 +312,6 @@ var self = window,
   type = ["circle", "ovals", "drop", "ribbon"],
   currentLayout = 3,
   status = 0,
-  word = "新年晚会抽奖环节",
   colors = [
     ["#e67e22", "#2c3e50"],
     ["#c0392b", "#ff7e15"],
